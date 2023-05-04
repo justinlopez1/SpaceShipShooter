@@ -23,6 +23,7 @@ public:
     }
 };
 
+
 class enemy1 : virtual public enemy {
     int xvelocity = 0;
     int yvelocity = 150;
@@ -30,9 +31,6 @@ class enemy1 : virtual public enemy {
     sf::Sprite enemysprite;
     sf::RectangleShape enemyhitbox;
     sf::Clock shoottimer;
-
-
-
 
 public:
     explicit enemy1(textures* t, sf::Vector2f pos);
@@ -43,6 +41,27 @@ public:
     void hit() override;
     sf::Clock* getclock() override;
 
+
+};
+
+
+
+class enemy2 : virtual public enemy {
+    int xvelocity = 0;
+    int yvelocity = 75;
+    int health = 1;
+    sf::Sprite enemysprite;
+    sf::RectangleShape enemyhitbox;
+    sf::Clock shoottimer;
+
+public:
+    explicit enemy2(textures* t, sf::Vector2f pos);
+    void updateposition(sf::Time dt) override;
+    sf::Sprite* getsprite() override;
+    sf::RectangleShape* getrect() override;
+    int gethealth() override;
+    void hit() override;
+    sf::Clock* getclock() override;
 
 };
 

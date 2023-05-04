@@ -112,3 +112,12 @@ sf::Clock *asteroid::getclock() {
     return nullptr;
 }
 
+enemy2::enemy2(textures *t, sf::Vector2f pos) : enemy() {
+    enemysprite.setTexture(*t->gettexture("enemy2"));
+    enemysprite.setOrigin(enemysprite.getLocalBounds().width/2, enemysprite.getLocalBounds().height/2);
+    enemysprite.setPosition(pos);
+}
+
+void enemy2::updateposition(sf::Time dt) {
+    enemysprite.move(float(xvelocity) * dt.asSeconds(), float(yvelocity) * dt.asSeconds());
+}

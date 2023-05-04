@@ -72,6 +72,8 @@ int main()
             }
         }
 
+        cout << "happy" << endl;
+
         player.addenemy(enemyspawnclock);
         player.addasteroid(asteroidspawnclock);
 

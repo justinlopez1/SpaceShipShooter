@@ -33,7 +33,7 @@ int main()
                                    "files/images/background2.png", "files/images/background0.png",
                                    "files/images/background3.png", "files/images/background4.png",
                                    "files/images/asteroidsmall.png", "files/images/asteroidmedium.png",
-                                   "files/images/asteroidlarge.png", "files/images/enemy1bullet.png"
+                                   "files/images/asteroidlarge.png", "files/images/enemy1bullet.png",
                                    "files/images/enemy2.png",};
 
     textures texturemanager(filenamevect);
@@ -65,10 +65,9 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space and
                     shootclock.getElapsedTime().asSeconds() > 0.15) {
-                        player.addbullet();
+                        player.addplayerbullet();
                         shootclock.restart();
                     }
-
 
             }
         }

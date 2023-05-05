@@ -57,8 +57,8 @@ public:
     void addenemy(sf::Clock &timer);
     void addasteroid(sf::Clock &timer);
 
-
-    void addbullet();
+    void checkoutofbounds();
+    void addplayerbullet();
     void drawall(sf::RenderWindow &window);
 
 

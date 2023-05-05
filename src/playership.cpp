@@ -6,12 +6,13 @@
 #include <chrono>
 #include <random>
 #include <utility>
+#include <math.h>
 using namespace std;
 
 playership::playership(textures* texturesptr) {
     alive = true;
     playersprite.setTexture(*texturesptr->gettexture("spaceship"));
-    playersprite.setScale(.8, .8);
+    playersprite.setScale(.6, .6);
     playersprite.setOrigin(playersprite.getLocalBounds().width/2, playersprite.getLocalBounds().height/2);
     playersprite.setPosition(float(WIDTH)/2, float(HEIGHT)/2 + 300);
     texturemanager = texturesptr;
@@ -52,7 +53,7 @@ void playership::updateship(sf::Time dt) {
 
 }
 
-void playership::addbullet() {
+void playership::addplayerbullet() {
     bulletvect.emplace_back(new playerbullet(texturemanager, playersprite.getPosition()));
 }
 
@@ -61,17 +62,22 @@ void playership::addenemy(sf::Clock &timer) {
     if (timer.getElapsedTime().asSeconds() < 6)
         return;
 
-    int temp = getrandom(1, 1);
+    int temp = getrandom(1, 2);
 
     if (temp == 1)
     {
-        int temp = getrandom(200, 1200);
+        int temp_position = getrandom(200, 1200);
 
-        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp, 0)));
-        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp - 35, -35)));
-        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp + 35, -35)));
-        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp - 70, -70)));
-        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp + 70, -70)));
+        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp_position, 0)));
+        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp_position - 35, -35)));
+        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp_position + 35, -35)));
+        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp_position - 70, -70)));
+        enemyvect.push_back(new enemy1(texturemanager, sf::Vector2f(temp_position + 70, -70)));
+    }
+    if (temp == 2) 
+    {
+        int temp_position = getrandom(100, 1100);
+        enemyvect.push_back(new enemy2(texturemanager, sf::Vector2f(temp_position, 0)));
     }
 
     timer.restart();
@@ -89,20 +95,27 @@ void playership::updateenemies(sf::Time dt) {
             }
         }
 
-        if (enemyvect[i]->getrect()->getPosition().y + 50 > HEIGHT) {
-            delete enemyvect[i];
-            enemyvect.erase(enemyvect.begin() + i);
+        if (dynamic_cast<enemy2*>(enemyvect[i]) != nullptr) {
+            //is enemy2
+            if (enemyvect[i]->getclock()->getElapsedTime().asSeconds() > 0.8) {
+                for (int j = 0; j < 24; j++) {
+                    float angle = j * PI / 12;
+                    float xvelocity = 450 * cos(angle);
+                    float yvelocity = 450 * sin(angle);
+                    enemybulletvect.push_back(new enemy2bullet(texturemanager, enemyvect[i]->getrect()->getPosition(), "2", sf::Vector2f(xvelocity, yvelocity)));
+                }
+                
+                enemyvect[i]->getclock()->restart();
+            }
         }
+
     }
 
     for (int i = 0; i < enemybulletvect.size(); i++) {
         enemybulletvect[i]->move(dt);
-        if (enemybulletvect[i]->getbullethitbox()->getPosition().y + 50 > HEIGHT) {
-            delete enemybulletvect[i];
-            enemybulletvect.erase(enemybulletvect.begin() + i);
-        }
     }
 
+    checkoutofbounds();
 
 }
 
@@ -112,15 +125,17 @@ void playership::drawall(sf::RenderWindow &window) {
         //window.draw(*bulletvect[i]->getbullethitbox()); //hitbox drawing
     }
 
-    for (auto & i : enemyvect) {
-        window.draw(*i->getsprite());
-        //window.draw(*enemyvect[i]->getrect());   //hitbox drawing
-    }
-
     for (auto & i : enemybulletvect) {
         window.draw(*i->getbulletsprite());
-        //window.draw(*enemybulletvect[i]->getbullethitbox());
+        //window.draw(*i->getbullethitbox());
     }
+
+    for (auto & i : enemyvect) {
+        window.draw(*i->getsprite());
+        //window.draw(*i->getrect());   //hitbox drawing
+    }
+
+    
 
     window.draw(playersprite);
 
@@ -158,10 +173,27 @@ void playership::addasteroid(sf::Clock &timer) {
     if (timer.getElapsedTime().asSeconds() < 2.5)
         return;
 
-    sf::Vector2f tempindex(getrandom(200, 1200), 0);
-    sf::Vector2f tempvel(getrandom(-150, 150), getrandom(150, 450));
-    int size = getrandom(0, 2);
-    enemyvect.push_back(new asteroid(texturemanager, tempindex, tempvel, size));
+    int temp = getrandom(1, 3);
+    if (temp == 1) {
+        sf::Vector2f tempindex(getrandom(200, WIDTH - 200), 0);
+        sf::Vector2f tempvel(getrandom(-150, 150), getrandom(150, 450));
+        int size = getrandom(0, 2);
+        enemyvect.push_back(new asteroid(texturemanager, tempindex, tempvel, size));
+    }
+    else if (temp == 2) {
+        sf::Vector2f tempindex(WIDTH + 50, getrandom(100, HEIGHT - 100));
+        sf::Vector2f tempvel(getrandom(-450, -150), getrandom(-150, 150));
+        int size = getrandom(0, 2);
+        enemyvect.push_back(new asteroid(texturemanager, tempindex, tempvel, size));
+        
+    }
+    else if (temp == 3) {
+        sf::Vector2f tempindex(-50, getrandom(100, HEIGHT - 100));
+        sf::Vector2f tempvel(getrandom(150, 450), getrandom(-150, 150));
+        int size = getrandom(0, 2);
+        enemyvect.push_back(new asteroid(texturemanager, tempindex, tempvel, size));
+        
+    }
 
     timer.restart();
 }
@@ -177,6 +209,27 @@ void playership::deleteall() {
         delete i;
     }
 }
+
+void playership::checkoutofbounds() {
+    for (int i = 0; i < enemybulletvect.size(); i++) {
+        if (enemybulletvect[i]->getbullethitbox()->getPosition().y > HEIGHT + 100 or enemybulletvect[i]->getbullethitbox()->getPosition().y < -100 or 
+            enemybulletvect[i]->getbullethitbox()->getPosition().x < -100 or enemybulletvect[i]->getbullethitbox()->getPosition().x > WIDTH + 100) {
+            delete enemybulletvect[i];
+            enemybulletvect.erase(enemybulletvect.begin() + i);
+        }
+    }
+
+    for (int i = 0; i < enemyvect.size(); i++) {
+        if (enemyvect[i]->getrect()->getPosition().y > HEIGHT + 100 or enemyvect[i]->getrect()->getPosition().y < -100 or 
+            enemyvect[i]->getrect()->getPosition().x < -100 or enemyvect[i]->getrect()->getPosition().x > WIDTH + 100) {
+                    delete enemyvect[i];
+                    enemyvect.erase(enemyvect.begin() + i);
+            }
+    }
+
+}
+
+
 
 
 playership::playerbullet::playerbullet(textures *texturesptr, sf::Vector2f position) {

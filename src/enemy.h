@@ -48,8 +48,8 @@ public:
 
 class enemy2 : virtual public enemy {
     int xvelocity = 0;
-    int yvelocity = 75;
-    int health = 1;
+    int yvelocity = 100;
+    int health = 2;
     sf::Sprite enemysprite;
     sf::RectangleShape enemyhitbox;
     sf::Clock shoottimer;

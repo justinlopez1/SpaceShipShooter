@@ -116,8 +116,36 @@ enemy2::enemy2(textures *t, sf::Vector2f pos) : enemy() {
     enemysprite.setTexture(*t->gettexture("enemy2"));
     enemysprite.setOrigin(enemysprite.getLocalBounds().width/2, enemysprite.getLocalBounds().height/2);
     enemysprite.setPosition(pos);
+
+
+    enemyhitbox.setSize(sf::Vector2f(enemysprite.getLocalBounds().width/2, enemysprite.getLocalBounds().height/2));
+    enemyhitbox.setOrigin(enemyhitbox.getLocalBounds().width/2, enemyhitbox.getLocalBounds().height/2);
+    enemyhitbox.setPosition(enemysprite.getPosition());
+    enemyhitbox.setFillColor(sf::Color::White);
 }
 
 void enemy2::updateposition(sf::Time dt) {
     enemysprite.move(float(xvelocity) * dt.asSeconds(), float(yvelocity) * dt.asSeconds());
+    enemyhitbox.setPosition(enemysprite.getPosition());
+}
+
+sf::Sprite *enemy2::getsprite() {
+    return &enemysprite;
+}
+
+sf::RectangleShape *enemy2::getrect() {
+    return &enemyhitbox;
+}
+
+int enemy2::gethealth() {
+    return health;
+}
+
+void enemy2::hit() {
+    health -= 1;
+    enemysprite.setColor(sf::Color(255, 150, 150));
+}
+
+sf::Clock *enemy2::getclock() {
+    return &shoottimer;
 }

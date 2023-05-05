@@ -11,6 +11,7 @@
 #include "textures.h"
 #define WIDTH 1400
 #define HEIGHT 900
+#define PI 3.14159265358979323846
 
 class background {
     textures* texturemanager;

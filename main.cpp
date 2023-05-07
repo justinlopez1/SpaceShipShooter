@@ -86,4 +86,7 @@ int main()
         debug(window, to_string(dt.asSeconds()), font);
         window.display();
     }
+
+    cout << "hi" << endl;
+    
 }

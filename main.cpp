@@ -7,6 +7,8 @@
 #include "src/playership.h"
 #include "src/background.h"
 #include "src/leaker.h"
+
+
 using namespace std;
 
 
@@ -34,7 +36,7 @@ int main()
                                    "files/images/background3.png", "files/images/background4.png",
                                    "files/images/asteroidsmall.png", "files/images/asteroidmedium.png",
                                    "files/images/asteroidlarge.png", "files/images/enemy1bullet.png",
-                                   "files/images/enemy2.png",};
+                                   "files/images/enemy2.png", "files/images/satelite.png"};
 
     textures texturemanager(filenamevect);
     //background sprite
@@ -81,12 +83,13 @@ int main()
         player.playerbulletenemycollisioncheck();
 
         window.clear();
+
         b.updatebackground(window, dt);
         player.drawall(window);
+        player.updatescore(window);
         debug(window, to_string(dt.asSeconds()), font);
+
         window.display();
     }
 
-    cout << "hi" << endl;
-    
 }

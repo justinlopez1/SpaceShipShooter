@@ -17,6 +17,10 @@ playership::playership(textures* texturesptr) {
     playersprite.setPosition(float(WIDTH)/2, float(HEIGHT)/2 + 300);
     texturemanager = texturesptr;
 
+    if (!font.loadFromFile("files/font.ttf")) cout << "font load error" << endl;
+    scoretext.setFont(font);
+    scoretext.setString("000000");
+    scoretext.setPosition(WIDTH - (scoretext.getLocalBounds().width), 0);
 
     generator.seed(chrono::steady_clock::now().time_since_epoch().count());
 
@@ -59,10 +63,10 @@ void playership::addplayerbullet() {
 
 void playership::addenemy(sf::Clock &timer) {
 
-    if (timer.getElapsedTime().asSeconds() < 6)
+    if (timer.getElapsedTime().asSeconds() < 3.5)
         return;
 
-    int temp = getrandom(1, 2);
+    int temp = getrandom(1, 3);
 
     if (temp == 1)
     {
@@ -78,6 +82,12 @@ void playership::addenemy(sf::Clock &timer) {
     {
         int temp_position = getrandom(100, 1100);
         enemyvect.push_back(new enemy2(texturemanager, sf::Vector2f(temp_position, 0)));
+    }
+
+    if (temp == 3)
+    {
+        int temp_position = getrandom(100, 1100);
+        enemyvect.push_back(new satelite(texturemanager, sf::Vector2f(temp_position, 0)));
     }
 
     timer.restart();
@@ -97,11 +107,11 @@ void playership::updateenemies(sf::Time dt) {
 
         if (dynamic_cast<enemy2*>(enemyvect[i]) != nullptr) {
             //is enemy2
-            if (enemyvect[i]->getclock()->getElapsedTime().asSeconds() > 0.8) {
+            if (enemyvect[i]->getclock()->getElapsedTime().asSeconds() > 1.75) {
                 for (int j = 0; j < 24; j++) {
                     float angle = j * PI / 12;
-                    float xvelocity = 450 * cos(angle);
-                    float yvelocity = 450 * sin(angle);
+                    float xvelocity = cos(angle);
+                    float yvelocity = sin(angle);
                     enemybulletvect.push_back(new enemy2bullet(texturemanager, enemyvect[i]->getrect()->getPosition(), "2", sf::Vector2f(xvelocity, yvelocity)));
                 }
                 
@@ -154,10 +164,11 @@ void playership::playerbulletenemycollisioncheck() {
         }
     }
 
-    for (int j = 0; j < enemyvect.size(); j++) {
-        if (enemyvect[j]->gethealth() <= 0) {
-            delete enemyvect[j];
-            enemyvect.erase(enemyvect.begin() + j);
+    for (int i = 0; i < enemyvect.size(); i++) {
+        if (enemyvect[i]->gethealth() <= 0) {
+            score += enemyvect[i]->getscore();
+            delete enemyvect[i];
+            enemyvect.erase(enemyvect.begin() + i);
 
         }
     }
@@ -170,13 +181,13 @@ int playership::getrandom(int min, int max) {
 
 void playership::addasteroid(sf::Clock &timer) {
 
-    if (timer.getElapsedTime().asSeconds() < 2.5)
+    if (timer.getElapsedTime().asSeconds() < 1.2)
         return;
 
     int temp = getrandom(1, 3);
     if (temp == 1) {
         sf::Vector2f tempindex(getrandom(200, WIDTH - 200), 0);
-        sf::Vector2f tempvel(getrandom(-150, 150), getrandom(150, 450));
+        sf::Vector2f tempvel(getrandom(-250, 150), getrandom(150, 450));
         int size = getrandom(0, 2);
         enemyvect.push_back(new asteroid(texturemanager, tempindex, tempvel, size));
     }
@@ -229,7 +240,19 @@ void playership::checkoutofbounds() {
 
 }
 
+void playership::updatescore(sf::RenderWindow &window) {
+    string tempscorestring = to_string(score);
+    if (tempscorestring.size() < 6) {
+        for (int i = tempscorestring.size(); i < 6; i++) {
+            tempscorestring = "0" + tempscorestring;
+        }
+    }
 
+
+    scoretext.setString(tempscorestring);
+    scoretext.setPosition(WIDTH - (scoretext.getLocalBounds().width + 100), 0);
+    window.draw(scoretext);
+}
 
 
 playership::playerbullet::playerbullet(textures *texturesptr, sf::Vector2f position) {
@@ -245,7 +268,7 @@ playership::playerbullet::playerbullet(textures *texturesptr, sf::Vector2f posit
 }
 
 void playership::playerbullet::move(sf::Time dt) {
-    bulletsprite.move(0, velocity * dt.asSeconds());
+    bulletsprite.move(0, -velocity * dt.asSeconds());
     bullethitbox.setPosition(bulletsprite.getPosition());
 }
 

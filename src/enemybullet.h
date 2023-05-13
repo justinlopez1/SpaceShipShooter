@@ -23,7 +23,7 @@ public:
 
 class enemy1bullet : virtual public enemybullet {
     float xvelocity = 0;
-    float yvelocity = 0;
+    float yvelocity = 500;
     sf::RectangleShape bullethitbox;
     sf::Sprite bulletsprite;
     std::string type;
@@ -37,8 +37,8 @@ public:
 };
 
 class enemy2bullet : virtual public enemybullet {
-    float xvelocity = 0;
-    float yvelocity = 0;
+    float xvelocity = 300;
+    float yvelocity = 300;
     sf::CircleShape bulletcircle;
     sf::RectangleShape bullethitbox;
     std::string type;
@@ -49,6 +49,20 @@ public:
     sf::CircleShape* getbulletsprite() override;
     sf::RectangleShape* getbullethitbox() override;
 
+};
+
+class satelitebullet : virtual public enemybullet {
+    float xvelocity = 0;
+    float yvelocity = 0;
+    sf::RectangleShape bullethitbox;
+    sf::Sprite bulletsprite;
+    std::string type;
+
+public:
+    satelitebullet(textures* texturesptr, sf::Vector2f position, std::string t, sf::Vector2f velocity);
+    void move(sf::Time dt) override;
+    sf::CircleShape* getbulletsprite() override;
+    sf::RectangleShape* getbullethitbox() override;
 };
 
 #endif //GALAGAGAME_ENEMYBULLET_H

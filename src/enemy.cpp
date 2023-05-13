@@ -48,6 +48,11 @@ sf::Clock *enemy1::getclock() {
     return &shoottimer;
 }
 
+int enemy1::getscore() {
+    return score;
+}
+
+
 asteroid::asteroid(textures *t, sf::Vector2f pos, sf::Vector2f vel, int size) {
     xvelocity = int(vel.x);
     yvelocity = int(vel.y);
@@ -112,6 +117,11 @@ sf::Clock *asteroid::getclock() {
     return nullptr;
 }
 
+int asteroid::getscore() {
+    return score;
+}
+
+
 enemy2::enemy2(textures *t, sf::Vector2f pos) : enemy() {
     enemysprite.setTexture(*t->gettexture("enemy2"));
     enemysprite.setOrigin(enemysprite.getLocalBounds().width/2, enemysprite.getLocalBounds().height/2);
@@ -149,3 +159,43 @@ void enemy2::hit() {
 sf::Clock *enemy2::getclock() {
     return &shoottimer;
 }
+
+int enemy2::getscore() {
+    return score;
+}
+
+
+satelite::satelite(textures *t, sf::Vector2f pos) : enemy() {
+    enemysprite.setTexture(*t->gettexture("satelite"));
+    enemysprite.setOrigin(enemysprite.getLocalBounds().width/2, enemysprite.getLocalBounds().height/2);
+    enemysprite.setPosition(pos);
+}
+
+void satelite::updateposition(sf::Time dt) {
+    enemysprite.move(float(xvelocity) * dt.asSeconds(), float(yvelocity) * dt.asSeconds());
+}
+
+sf::Sprite *satelite::getsprite() {
+    return &enemysprite;
+}
+
+sf::RectangleShape *satelite::getrect() {
+    return &enemyhitbox;
+}
+
+int satelite::gethealth() {
+    return health;
+}
+
+void satelite::hit() {
+    health -= 1;
+}
+
+sf::Clock *satelite::getclock() {
+    return &shoottimer;
+}
+
+int satelite::getscore() {
+    return score;
+}
+

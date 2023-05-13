@@ -14,6 +14,7 @@ public:
     virtual sf::Sprite* getsprite() = 0;
     virtual sf::RectangleShape* getrect() = 0;
     virtual int gethealth() = 0;
+    virtual int getscore() = 0;
     virtual void hit() = 0;
     virtual sf::Clock* getclock() = 0;
 
@@ -31,6 +32,7 @@ class enemy1 : virtual public enemy {
     sf::Sprite enemysprite;
     sf::RectangleShape enemyhitbox;
     sf::Clock shoottimer;
+    int score = 100;
 
 public:
     explicit enemy1(textures* t, sf::Vector2f pos);
@@ -40,13 +42,14 @@ public:
     int gethealth() override;
     void hit() override;
     sf::Clock* getclock() override;
-
+    int getscore() override;
 
 };
 
 
 
 class enemy2 : virtual public enemy {
+    int score = 150;
     int xvelocity = 0;
     int yvelocity = 100;
     int health = 2;
@@ -62,6 +65,7 @@ public:
     int gethealth() override;
     void hit() override;
     sf::Clock* getclock() override;
+    int getscore() override;
 
 };
 
@@ -73,6 +77,7 @@ class asteroid : virtual public enemy {
     int health;
     sf::Sprite enemysprite;
     sf::RectangleShape enemyhitbox;
+    int score = 50;
 
 
 public:
@@ -83,7 +88,28 @@ public:
     int gethealth() override;
     void hit() override;
     sf::Clock* getclock() override;
+    int getscore() override;
 
+};
+
+class satelite : virtual public enemy {
+    int xvelocity = 0;
+    int yvelocity = 100;
+    int health = 3;
+    sf::Sprite enemysprite;
+    sf::RectangleShape enemyhitbox;
+    sf::Clock shoottimer;
+    int score = 350;
+
+public:
+    explicit satelite(textures* t, sf::Vector2f pos);
+    void updateposition(sf::Time dt) override;
+    sf::Sprite* getsprite() override;
+    sf::RectangleShape* getrect() override;
+    int gethealth() override;
+    void hit() override;
+    sf::Clock* getclock() override;
+    int getscore() override;
 
 };
 

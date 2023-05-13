@@ -19,14 +19,21 @@
 
 
 
+
 class playership {
     bool alive = true;
+    const float velocity = 300;
+    int score = 0;
+    std::mt19937 generator;
+
+    sf::Font font;
+
     sf::Sprite playersprite;
     textures* texturemanager;
-    const float velocity = 300;
+    sf::Text scoretext;
 
     struct playerbullet {
-        float velocity = -800;
+        float velocity = 800;
         sf::RectangleShape bullethitbox;
         sf::Sprite bulletsprite;
 
@@ -38,10 +45,11 @@ class playership {
     };
 
     std::vector<playerbullet*> bulletvect;
+
     std::vector<enemy*> enemyvect;
     std::vector<enemybullet*> enemybulletvect;
 
-    std::mt19937 generator;
+    
 
 
 public:
@@ -60,6 +68,7 @@ public:
     void checkoutofbounds();
     void addplayerbullet();
     void drawall(sf::RenderWindow &window);
+    void updatescore(sf::RenderWindow &window);
 
 
 

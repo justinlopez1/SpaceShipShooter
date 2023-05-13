@@ -11,9 +11,6 @@ enemy1bullet::enemy1bullet(textures *texturesptr, sf::Vector2f position, std::st
     bulletsprite.scale(1, 1);
     bulletsprite.setPosition(position.x, position.y + 50);
 
-    xvelocity = 0;
-    yvelocity = 700;
-
     bullethitbox.setSize(sf::Vector2f(bulletsprite.getLocalBounds().width/2, bulletsprite.getLocalBounds().height/2));
     bullethitbox.setOrigin(bullethitbox.getLocalBounds().width/2, bullethitbox.getLocalBounds().height/2);
     bullethitbox.setPosition(bulletsprite.getPosition());
@@ -40,8 +37,8 @@ enemy2bullet::enemy2bullet(textures *texturesptr, sf::Vector2f position, std::st
     bulletcircle.setPosition(position.x, position.y);
     
 
-    xvelocity = velocity.y;
-    yvelocity = velocity.x;
+    xvelocity *= velocity.y;
+    yvelocity *= velocity.x;
 
     
     bulletcircle.setOutlineThickness(1);
@@ -68,6 +65,21 @@ sf::RectangleShape *enemy2bullet::getbullethitbox() {
     return &bullethitbox;
 }
 
+satelitebullet::satelitebullet(textures* texturesptr, sf::Vector2f position, std::string t, sf::Vector2f velocity) {
+    type = std::move(t);
+    bulletsprite.setTexture(*texturesptr->gettexture("enemy1bullet"));
+    bulletsprite.setOrigin(bulletsprite.getLocalBounds().width/2, bulletsprite.getLocalBounds().height/2);
+    bulletsprite.scale(1, 1);
+    bulletsprite.setPosition(position.x, position.y + 50);
+    bulletsprite.setColor(sf::Color::Yellow);
 
+    bullethitbox.setSize(sf::Vector2f(bulletsprite.getLocalBounds().width/2, bulletsprite.getLocalBounds().height/2));
+    bullethitbox.setOrigin(bullethitbox.getLocalBounds().width/2, bullethitbox.getLocalBounds().height/2);
+    bullethitbox.setPosition(bulletsprite.getPosition());
+    bullethitbox.setFillColor(sf::Color::White);
+
+    xvelocity = velocity.y;
+    yvelocity = velocity.x;
+}
 
 

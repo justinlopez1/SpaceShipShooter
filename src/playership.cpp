@@ -119,6 +119,27 @@ void playership::updateenemies(sf::Time dt) {
             }
         }
 
+        if (dynamic_cast<satelite*>(enemyvect[i]) != nullptr) {
+            //is satelite
+            int distancex = playersprite.getPosition().x - enemyvect[i]->getsprite()->getPosition().x;
+            int distancey = playersprite.getPosition().y - enemyvect[i]->getsprite()->getPosition().y;
+            float angle = atan2(distancey, distancex);
+            enemyvect[i]->getsprite()->setRotation(angle * 180 / PI);
+            enemyvect[i]->getrect()->setRotation(angle * 180 / PI);
+
+            if (enemyvect[i]->getclock()->getElapsedTime().asSeconds() > 2) {
+                int distancex = playersprite.getPosition().x - enemyvect[i]->getsprite()->getPosition().x;
+                int distancey = playersprite.getPosition().y - enemyvect[i]->getsprite()->getPosition().y;
+                float angle = atan2(distancey, distancex);
+
+                enemybulletvect.push_back(new satelitebullet(texturemanager, enemyvect[i]->getsprite()->getPosition(), "3", sf::Vector2f(cos(angle), sin(angle)), angle * 180 / PI));
+
+                enemyvect[i]->getsprite()->setRotation(angle * 180 / PI);
+
+                enemyvect[i]->getclock()->restart();
+            }
+        }
+
     }
 
     for (int i = 0; i < enemybulletvect.size(); i++) {

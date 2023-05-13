@@ -52,16 +52,16 @@ public:
 };
 
 class satelitebullet : virtual public enemybullet {
-    float xvelocity = 0;
-    float yvelocity = 0;
+    float xvelocity = 400;
+    float yvelocity = 400;
     sf::RectangleShape bullethitbox;
     sf::Sprite bulletsprite;
     std::string type;
 
 public:
-    satelitebullet(textures* texturesptr, sf::Vector2f position, std::string t, sf::Vector2f velocity);
+    satelitebullet(textures* texturesptr, sf::Vector2f position, std::string t, sf::Vector2f velocity, int angle);
     void move(sf::Time dt) override;
-    sf::CircleShape* getbulletsprite() override;
+    sf::Sprite* getbulletsprite() override;
     sf::RectangleShape* getbullethitbox() override;
 };
 

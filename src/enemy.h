@@ -94,7 +94,7 @@ public:
 
 class satelite : virtual public enemy {
     int xvelocity = 0;
-    int yvelocity = 100;
+    int yvelocity = 75;
     int health = 3;
     sf::Sprite enemysprite;
     sf::RectangleShape enemyhitbox;

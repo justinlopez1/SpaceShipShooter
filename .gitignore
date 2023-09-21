@@ -2,3 +2,5 @@ CMakeLists.txt
 .vscode
 README.md
 build
+cmake-build-debug
+.idea

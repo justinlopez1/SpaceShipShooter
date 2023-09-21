@@ -54,7 +54,6 @@ void playership::updateship(sf::Time dt) {
             bulletvect.erase(bulletvect.begin() + i);
         }
     }
-
 }
 
 void playership::addplayerbullet() {
@@ -230,18 +229,6 @@ void playership::addasteroid(sf::Clock &timer) {
     timer.restart();
 }
 
-void playership::deleteall() {
-    for (auto i : bulletvect) {
-        delete i;
-    }
-    for (auto i : enemyvect) {
-        delete i;
-    }
-    for (auto i : enemybulletvect) {
-        delete i;
-    }
-}
-
 void playership::checkoutofbounds() {
     for (int i = 0; i < enemybulletvect.size(); i++) {
         if (enemybulletvect[i]->getbullethitbox()->getPosition().y > HEIGHT + 100 or enemybulletvect[i]->getbullethitbox()->getPosition().y < -100 or 
@@ -273,6 +260,18 @@ void playership::updatescore(sf::RenderWindow &window) {
     scoretext.setString(tempscorestring);
     scoretext.setPosition(WIDTH - (scoretext.getLocalBounds().width + 100), 0);
     window.draw(scoretext);
+}
+
+playership::~playership() {
+    for (auto i : bulletvect) {
+        delete i;
+    }
+    for (auto i : enemyvect) {
+        delete i;
+    }
+    for (auto i : enemybulletvect) {
+        delete i;
+    }
 }
 
 

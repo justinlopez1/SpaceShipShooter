@@ -45,7 +45,6 @@ class playership {
     };
 
     std::vector<playerbullet*> bulletvect;
-
     std::vector<enemy*> enemyvect;
     std::vector<enemybullet*> enemybulletvect;
 
@@ -53,7 +52,7 @@ class playership {
 
 
 public:
-    void deleteall();
+    ~playership();
     int getrandom(int min, int max);
     explicit playership(textures* texturesptr);
 

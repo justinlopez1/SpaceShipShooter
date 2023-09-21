@@ -62,7 +62,6 @@ int main()
             {
                 case sf::Event::Closed:
                     window.close();
-                    player.deleteall();
                     return 0;
 
                 case sf::Event::KeyPressed:

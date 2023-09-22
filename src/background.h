@@ -21,7 +21,7 @@ class background {
 
 public:
     explicit background(textures* t);
-    void updatebackground(sf::RenderWindow &window, sf::Time dt);
+    void updatebackground(sf::RenderWindow &window, sf::Time dt, bool update);
 };
 
 

@@ -22,7 +22,7 @@
 
 class playership {
     bool alive = true;
-    const float velocity = 300;
+    float velocity = 300;
     int score = 0;
     int health = 3;
     std::mt19937 generator;
@@ -33,6 +33,7 @@ class playership {
     sf::RectangleShape playerhitbox;
     textures* texturemanager;
     sf::Text scoretext;
+    sf::Text deathMessage;
 
     struct playerbullet {
         float velocity = 800;
@@ -57,6 +58,7 @@ public:
     ~playership();
     int getrandom(int min, int max);
     explicit playership(textures* texturesptr);
+    void reset();
 
     void updateship(sf::Time dt);
     void updateenemies(sf::Time dt);
@@ -69,6 +71,7 @@ public:
     void checkoutofbounds();
     void addplayerbullet();
     void drawall(sf::RenderWindow &window);
+    void drawDeathMessage(sf::RenderWindow &window);
     void updatescore(sf::RenderWindow &window);
     bool isAlive();
     int getScore();

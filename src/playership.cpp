@@ -28,6 +28,10 @@ playership::playership(textures* texturesptr) {
     scoretext.setString("000000");
     scoretext.setPosition(WIDTH - (scoretext.getLocalBounds().width), 0);
 
+    deathMessage.setFont(font);
+    deathMessage.setString("You died! Your Score: " + to_string(score) + "\nPress \"Enter\" to restart");
+    deathMessage.setPosition(WIDTH/2 - (deathMessage.getLocalBounds().width/2), HEIGHT/2 - (deathMessage.getLocalBounds().height/2));
+
     generator.seed(chrono::steady_clock::now().time_since_epoch().count());
 
 }
@@ -172,9 +176,9 @@ void playership::drawall(sf::RenderWindow &window) {
         //window.draw(*i->getrect());   //hitbox drawing
     }
 
-    
 
     window.draw(playersprite);
+
     //window.draw(playerhitbox);
 
 }
@@ -307,6 +311,29 @@ void playership::enemyplayercollisioncheck() {
             cout << "YOU GOT HIT" << endl;
         }
     }
+}
+
+void playership::drawDeathMessage(sf::RenderWindow &window) {
+    window.draw(deathMessage);
+}
+
+void playership::reset() {
+    alive = true;
+    health = 3;
+    for (int i = enemyvect.size()-1; i >= 0; i--) {
+        delete enemyvect[i];
+        enemyvect.erase(enemyvect.begin()+i);
+    }
+    for (int i = enemybulletvect.size()-1; i >= 0; i--) {
+        delete enemybulletvect[i];
+        enemybulletvect.erase(enemybulletvect.begin()+i);
+    }
+    for (int i = bulletvect.size()-1; i >= 0; i--) {
+        delete bulletvect[i];
+        bulletvect.erase(bulletvect.begin()+i);
+    }
+    playersprite.setPosition(float(WIDTH)/2, float(HEIGHT)/2 + 300);
+    playerhitbox.setPosition(float(WIDTH)/2, float(HEIGHT)/2 + 300);
 }
 
 

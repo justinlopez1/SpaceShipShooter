@@ -42,15 +42,17 @@ background::background(textures *t) {
     current = 0;
 }
 
-void background::updatebackground(sf::RenderWindow &window, sf::Time dt) {
+void background::updatebackground(sf::RenderWindow &window, sf::Time dt, bool update) {
     int nextspriteindex = current + 1;
     if (current == backgroundspritesvect.size()-1)
         nextspriteindex = 0;
 
-    backgroundspritesvect[current].move(0, velocity * dt.asSeconds());
+    if (update)
+        backgroundspritesvect[current].move(0, velocity * dt.asSeconds());
     if (backgroundspritesvect[current].getPosition().y >= 0) {
         window.draw(backgroundspritesvect[nextspriteindex]);
-        backgroundspritesvect[nextspriteindex].move(0, velocity * dt.asSeconds());
+        if (update)
+            backgroundspritesvect[nextspriteindex].move(0, velocity * dt.asSeconds());
     }
     window.draw(backgroundspritesvect[current]);
     if (backgroundspritesvect[current].getPosition().y >= HEIGHT) {

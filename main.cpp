@@ -70,28 +70,32 @@ int main()
                         player.addplayerbullet();
                         shootclock.restart();
                     }
+                    if (event.key.code == sf::Keyboard::Return and !player.isAlive()) {
+                        player.reset();
+                    }
 
             }
         }
-        if (!player.isAlive()) {
-            cout << "Score: " << player.getScore() << endl;
-            window.close();
+
+        if (player.isAlive()) {
+            player.addenemy(enemyspawnclock);
+            player.addasteroid(asteroidspawnclock);
+
+            player.updateenemies(dt);
+            player.updateship(dt);
+            player.playerbulletenemycollisioncheck();
+            player.enemyplayercollisioncheck();
         }
-
-        player.addenemy(enemyspawnclock);
-        player.addasteroid(asteroidspawnclock);
-
-        player.updateenemies(dt);
-        player.updateship(dt);
-        player.playerbulletenemycollisioncheck();
-        player.enemyplayercollisioncheck();
 
         window.clear();
 
-        b.updatebackground(window, dt);
+        b.updatebackground(window, dt, player.isAlive());
         player.drawall(window);
         player.updatescore(window);
         debug(window, to_string(dt.asSeconds()), font);
+        if (!player.isAlive()) {
+            player.drawDeathMessage(window);
+        }
 
         window.display();
     }

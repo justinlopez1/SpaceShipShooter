@@ -17,6 +17,12 @@ playership::playership(textures* texturesptr) {
     playersprite.setPosition(float(WIDTH)/2, float(HEIGHT)/2 + 300);
     texturemanager = texturesptr;
 
+    playerhitbox.setFillColor(sf::Color::White);
+    playerhitbox.setSize(sf::Vector2f(playersprite.getLocalBounds().width, playersprite.getLocalBounds().height));
+    playerhitbox.setOrigin(playerhitbox.getLocalBounds().width/2, playerhitbox.getLocalBounds().height/2);
+    playerhitbox.setPosition(float(WIDTH)/2, float(HEIGHT)/2 + 300);
+    playerhitbox.setScale(.4, .4);
+
     if (!font.loadFromFile("files/font.ttf")) cout << "font load error" << endl;
     scoretext.setFont(font);
     scoretext.setString("000000");
@@ -54,6 +60,7 @@ void playership::updateship(sf::Time dt) {
             bulletvect.erase(bulletvect.begin() + i);
         }
     }
+    playerhitbox.setPosition(playersprite.getPosition());
 }
 
 void playership::addplayerbullet() {
@@ -126,7 +133,7 @@ void playership::updateenemies(sf::Time dt) {
             enemyvect[i]->getsprite()->setRotation(angle * 180 / PI);
             enemyvect[i]->getrect()->setRotation(angle * 180 / PI);
 
-            if (enemyvect[i]->getclock()->getElapsedTime().asSeconds() > 2) {
+            if (enemyvect[i]->getclock()->getElapsedTime().asSeconds() > 1.25) {
                 int distancex = playersprite.getPosition().x - enemyvect[i]->getsprite()->getPosition().x;
                 int distancey = playersprite.getPosition().y - enemyvect[i]->getsprite()->getPosition().y;
                 float angle = atan2(distancey, distancex);
@@ -168,6 +175,7 @@ void playership::drawall(sf::RenderWindow &window) {
     
 
     window.draw(playersprite);
+    //window.draw(playerhitbox);
 
 }
 
@@ -271,6 +279,33 @@ playership::~playership() {
     }
     for (auto i : enemybulletvect) {
         delete i;
+    }
+}
+
+bool playership::isAlive() {
+    return health > 0;
+}
+
+int playership::getScore() {
+    return score;
+}
+
+void playership::enemyplayercollisioncheck() {
+    for (int i = 0; i < enemybulletvect.size(); i++) {
+        if (playerhitbox.getGlobalBounds().intersects(enemybulletvect[i]->getbullethitbox()->getGlobalBounds())) {
+            health--;
+            delete enemybulletvect[i];
+            enemybulletvect.erase(enemybulletvect.begin() + i);
+            cout << "YOU GOT HIT" << endl;
+        }
+    }
+    for (int i = 0; i < enemyvect.size(); i++) {
+        if (playerhitbox.getGlobalBounds().intersects(enemyvect[i]->getrect()->getGlobalBounds())) {
+            health--;
+            delete enemyvect[i];
+            enemyvect.erase(enemyvect.begin() + i);
+            cout << "YOU GOT HIT" << endl;
+        }
     }
 }
 

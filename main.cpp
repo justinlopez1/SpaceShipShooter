@@ -73,7 +73,10 @@ int main()
 
             }
         }
-
+        if (!player.isAlive()) {
+            cout << "Score: " << player.getScore() << endl;
+            window.close();
+        }
 
         player.addenemy(enemyspawnclock);
         player.addasteroid(asteroidspawnclock);
@@ -81,6 +84,7 @@ int main()
         player.updateenemies(dt);
         player.updateship(dt);
         player.playerbulletenemycollisioncheck();
+        player.enemyplayercollisioncheck();
 
         window.clear();
 

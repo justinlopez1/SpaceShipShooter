@@ -52,8 +52,8 @@ public:
 };
 
 class satelitebullet : virtual public enemybullet {
-    float xvelocity = 400;
-    float yvelocity = 400;
+    float xvelocity = 650;
+    float yvelocity = 650;
     sf::RectangleShape bullethitbox;
     sf::Sprite bulletsprite;
     std::string type;

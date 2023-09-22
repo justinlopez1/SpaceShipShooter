@@ -24,11 +24,13 @@ class playership {
     bool alive = true;
     const float velocity = 300;
     int score = 0;
+    int health = 3;
     std::mt19937 generator;
 
     sf::Font font;
 
     sf::Sprite playersprite;
+    sf::RectangleShape playerhitbox;
     textures* texturemanager;
     sf::Text scoretext;
 
@@ -68,7 +70,8 @@ public:
     void addplayerbullet();
     void drawall(sf::RenderWindow &window);
     void updatescore(sf::RenderWindow &window);
-
+    bool isAlive();
+    int getScore();
 
 
 };

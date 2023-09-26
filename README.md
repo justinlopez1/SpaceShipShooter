@@ -1,5 +1,5 @@
 # SpaceShipShooter
-In progress 2d shooter/bullet hell game, in c++ using SFML
+Playable 2d shooter/bullet hell game, in c++ using SFML
 
 Justin Lopez, first year Computer Engineering major at UF
 
